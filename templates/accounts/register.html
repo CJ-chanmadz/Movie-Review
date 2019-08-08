@@ -1,0 +1,132 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Registration</title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+	<!-- custom css -->
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<style type="text/css">
+		
+		body, #particles-js {
+			background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(/static/img/zoro.jpg);
+			background-size: cover;
+			background-position: center center;
+			background-attachment: fixed;
+		}
+
+		.particles-js-canvas-el {
+		    margin-top: -43%;
+		}
+
+		.btn-primary {
+			background-color: #FFA500;
+			border: none;
+		}
+
+		.btn:hover {
+			background-color: #FF8C00;
+		}
+
+		#ui {
+			background-color: #1d1d1d;;
+			padding: 5px 30px 20px 30px;
+			margin-top: 17%;
+			border-radius: 10px;
+			opacity: 0.8;
+		}
+
+		#ui label,h1,p {
+			color: white;
+		}
+		  .form-control:focus {
+			  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 3px rgb(255,140,0);
+			}
+		.alert-danger, .alert-success {
+			width: 41%;
+			margin-top: 13px;
+			margin-bottom: -7px;
+		}
+	</style>
+
+</head>
+<body>
+	<div id="particles-js">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3"></div>
+				<div class="col-lg-6">
+					<div id="ui">
+						{% include 'partials/_alerts.html' %}
+						<form class="form-group" action="{% url 'register' %}" method="POST">{% csrf_token %}
+							<h1 class="text-center">Registration Form</h1>
+							<hr>
+
+							<div class="row">
+								<div class="col-lg-6">
+									<label>First Name:</label>
+									<input type="text" name="first_name" class="form-control" placeholder="Enter your firstname...">
+								</div>
+
+								<div class="col-lg-6">
+									<label>Last Name:</label>
+									<input type="text" name="last_name" class="form-control" placeholder="Enter your lastname...">
+								</div>
+							</div><br>
+
+							<div class="row">
+								<div class="col-lg-6">
+									<label>Username:</label>
+									<input type="text" name="username" class="form-control" placeholder="Enter your Username...">
+								</div>
+
+								<div class="col-lg-6">
+									<label>Email:</label>
+									<input type="text" name="email" class="form-control" placeholder="Enter your Email...">
+								</div>
+							</div><br>
+
+							<div class="row">
+								<div class="col-lg-6">
+									<label>Password:</label>
+									<input type="password" name="password" class="form-control" placeholder="Enter your Password...">
+								</div>
+
+								<div class="col-lg-6">
+									<label>Re-Enter Password:</label>
+									<input type="password" name="password2" class="form-control" placeholder="Re-Enter your Password...">
+								</div>
+							</div><br>
+
+							<input type="submit" name="submit" value="submit" class="btn btn-primary btn-block btn-lg"><br>
+
+							<p class="text-center">Have Already an Account?
+								<a href="{% url 'login' %}"> Login here.</a>
+							</p>
+
+						</form>
+					</div>
+				</div>
+				<div class="col-lg-3"></div>
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript" src="{% static 'particles/particles.js' %}"></script>
+<script type="text/javascript" src="{% static 'particles/app.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

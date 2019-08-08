@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<style type="text/css">
+		body {
+			background-image: linear-gradient(rgb(12, 12, 12),rgba(20, 20, 20, 0.7)), url(/static/img/zoro.jpg);
+			background-size: cover;
+			background-position: center center;
+			background-attachment: fixed;
+			color: white;
+		}
+		h2 {
+			color: white;
+		}
+
+		h2 i {
+			color: yellow;
+		}
+		.line {
+			border-bottom: 1px solid #464646;
+		}
+		.container-fluid {
+			padding-top: 6px;
+		    padding-bottom: 6px;
+		}
+		.area {
+			padding: 0px 0px 9px 15px;
+			background-color: #171717;
+			margin: 25px;
+		}
+		.btn-primary {
+			background-color: #FFA500;
+			border: none;
+		}
+		.btn:hover {
+			background-color: #FF8C00;
+		}
+		.form-control {
+		    height: 42px;
+		    background-color: #333;
+		    border: none;
+		    color: grey;
+		}
+		.search {
+		    height: 42px;
+		    background-color: #FFA500;
+		    border: none;
+		    color: white;
+		}
+		.search:hover {
+			color: white;
+		}
+
+		.navbar-toggle {
+		    margin-right: 0px;
+		    margin-top: -44px;
+		}
+
+			.navbar-brand>img {
+			    margin-left: -20px;
+			}
+
+		.modal-header .close {
+		    margin-top: -22px;
+		}
+		
+		.btn-secondary {
+			background: #FFA500;
+		}
+
+		#overflowTest {
+			padding: 15px;
+			width: 100%;
+			height: 400px;
+			overflow: scroll;
+		}
+
+
+	</style>
+
+</head>
+
+<div class="container" style="margin-top:30px">
+  
+    <div class="row">
+      <div class="card col-lg-3 col-md-6 text-center">
+        <img src="{{ object.image_url }}" class="img-thumbnail" alt="Cinque Terre" width="216">
+      </div>
+      
+      <div class="col-sm-8">
+        <h1>{{ object.movie_name }}</h1>
+        <h2>{{ object.movie_year }}</h2>
+		<h5>{{ object.movie_date }}</h5>
+		<h3><i>Available in </i>{{ object.movie_quality }}</h3>
+		<h4><i style="color:yellow;" class="glyphicon glyphicon-star"></i> Rating {{ object.movie_rating }}</h4>
+        <p>{{ object.movie_description }}</p>
+	  </div>
+
+		<div class="row">
+	
+		  <div style="color:grey;padding-right: 15px;" class="col-sm-8 area">
+			<h2 class="text-center">Movie Reviews</h2><hr>
+			<div id="overflowTest">
+				
+				{% if reviews %}
+					{% for review in reviews %}
+						{% if movie.id == review.movie_name_id %}
+							<p>Reviewed by: <i style="color: white">{{ review.author }}</i>  <i style="color: yellow" class="glyphicon glyphicon-star"></i> {{ review.movie_rating }}</p>
+							<h4><a style="text-decoration: none;color: white;" href="{% url 'review-detail' review.id %}"><b>{{ review.movie_title_content }}</b></a></h4>
+							<p> {{ review.movie_content }} </p>
+							<p>{{ review.movie_date }}</p><hr>
+						{% endif %}
+					{% endfor %}
+				{% else %}
+					<h1 class="text-center">Add Your Review Here!</h1>
+				{% endif %}
+	
+			</div>
+	
+			{% if user.is_authenticated %}
+				<div style="background-color: #171717;" class="modal-footer">
+					<button type="button" class="btn btn-secondary"><a style="text-decoration: none;color: white;" href="{% url 'post-create' movie.id %}">Add Review</a></button>
+				</div>
+			{% else %}
+				<div style="background-color: #171717;" class="modal-footer">
+					<p><i>You want to add review?</i> <button type="button" class="btn btn-secondary"><a style="text-decoration: none;color: white;" href="{% url 'login' %}">Login</a></button></p>
+				</div>
+			{% endif %}
+	
+		  </div>
+	
+		</div>
+	
+
+    </div>
+
+</div><br><br>
+
+{% endblock %}

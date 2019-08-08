@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<style type="text/css">
+		body {
+			background-image: linear-gradient(rgb(12, 12, 12),rgba(20, 20, 20, 0.7)), url(/static/img/zoro.jpg);
+			background-size: cover;
+			background-position: center center;
+			background-attachment: fixed;
+			color: white;
+		}
+		h2 {
+			color: white;
+		}
+
+		h2 i {
+			color: yellow;
+		}
+		.line {
+			border-bottom: 1px solid #464646;
+		}
+		.container-fluid {
+			padding-top: 6px;
+		    padding-bottom: 6px;
+		}
+		.area {
+			padding: 0px 0px 9px 15px;
+			background-color: #171717;
+			margin-top: 21px;
+		}
+		.btn-primary {
+			background-color: #FFA500;
+			border: none;
+		}
+		.btn:hover {
+			background-color: #FF8C00;
+		}
+		.form-control {
+		    height: 42px;
+		    background-color: #333;
+		    border: none;
+		    color: grey;
+		}
+		.search {
+		    height: 42px;
+		    background-color: #FFA500;
+		    border: none;
+		    color: white;
+		}
+		.search:hover {
+			color: white;
+		}
+
+		.navbar-toggle {
+		    margin-right: 0px;
+		    margin-top: -44px;
+		}
+
+			.navbar-brand>img {
+			    margin-left: -20px;
+			}
+
+		.modal-header .close {
+		    margin-top: -22px;
+		}
+
+		.btn-success:hover {
+			background: green;
+		}
+
+		.btn-secondary {
+			background: #FFA500;
+			color: white;
+		}
+
+		.btn-secondary:hover {
+			background: rgb(255, 123, 0);
+			color: white;
+		}
+
+		.btn-danger {
+			padding: 13px 60px 13px 60px;
+		}
+
+		.btn-success {
+			padding: 13px 59px 13px 59px;
+		}
+
+		.btn-danger:hover {
+			background: red;
+		}
+
+	</style>
+
+</head>
+	<div id="particles-js">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3"></div>
+				<div class="col-lg-6">
+					<div id="ui">
+						<form method="POST" style="background-color: #171717;margin-top: 100px;">
+							{% csrf_token %}
+							<h2 style="padding-top: 20px;" class="text-center">Review Detail</h2><hr>
+							<fieldset class="form-group" style="padding-left: 30px;">
+
+								<p style="color:gray">Reviewed by: <b style="color: yellow">{{ object.author }}</b> <i style="color: yellow" class="glyphicon glyphicon-star"></i> {{ object.movie_rating }}</p>
+								<h4><b style="color: white;">{{ object.movie_title_content }}</b></h4>
+								<p style="color:gray"> {{ object.movie_content }} </p>
+								<p style="color:gray">Date Posted: {{ object.movie_date }}</p>
+
+							</fieldset>
+							
+							{% if object.author == user %}
+								<div style="background-color: #171717; text-align: center;" class="modal-footer text-center">
+									<button type="button" class="btn btn-danger"><a style="text-decoration: none;color: white;" href="{% url 'post-delete' object.id %}">Delete</a></button>
+									<button type="button" class="btn btn-success"><a style="text-decoration: none;color: white;" href="{% url 'post-update' object.id %}">Edit</a></button>
+								</div>
+							{% else %}
+								<div style="background-color: #171717;padding-bottom: 50px;" class="modal-footer text-center"></div>
+							{% endif %}
+
+							
+						</form>
+					</div><br><br><br>
+				</div>
+				<div class="col-lg-3"></div>
+			</div>
+		</div>
+	</div><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}

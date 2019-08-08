@@ -1,0 +1,85 @@
+{% load static %}
+
+<style type="text/css">
+	.navbar-inverse .navbar-nav>.active>a {
+		border-radius: 5px;
+	}
+</style>
+
+<nav style="font-family: 'Roboto';background: #1d1d1d;" class="navbar-inverse container-fluid line navbar-fixed-top">
+
+	<div class="col-lg-1"></div>
+
+	<div class="col-lg-10">
+
+		<div style="margin-top: 5px;" class="navbar-header">
+		  <a class="navbar-brand" href="#"><img style="margin-top:-9px;" src="/static/img/logo.png" width="60%"></a>
+		</div>
+
+		<button class="navbar-toggle" data-toggle="collapse" data-target = ".navHeaderCollapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+
+		<div class="collapse navbar-collapse navHeaderCollapse">
+
+		    <form class="navbar-form navbar-right" method="GET" action="">
+		      <div class="input-group">
+		        <input type="text" name="q" class="form-control" placeholder="Quick Search" value="{{ request.GET.q }}">
+		        <div class="input-group-btn">
+		          <button class="btn btn-default search" type="submit">
+		            <i class="glyphicon glyphicon-search"></i>
+		          </button>
+		        </div>
+		      </div>
+		    </form>
+
+		    <ul style="margin-top: 6px;" class="nav navbar-nav">
+				
+				{% with url_name=request.resolver_match.url_name %}
+
+					<li class="{% if url_name == 'index' %}active{% endif %}">
+						<a href="{% url 'index' %}">Home</a>
+					</li>
+
+					<li class="{% if url_name == 'movie-list' %}active{% elif url_name == 'movie-listing' %}active{% endif %}">
+						<a href="{% url 'movie-list' %}">All Movies</a>
+					</li>
+
+				{% endwith %}
+
+				{% if user.is_authenticated %}
+					<li><a href="{% url 'request' %}">Request Movie</a></li>
+				{% else %}
+					<li><a href="{% url 'login' %}">Request Movie</a></li>
+				{% endif %}
+					  
+				{% if user.is_authenticated %}
+					<li style="margin-top: 15px; padding: 0px 14px 0 14px; color:white;">Welcome {{ user.username }}</li>
+
+					<li class="nav-item mr-3">
+                        <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link">
+                            Logout
+                        </a>
+
+                        <form action="{% url 'logout' %}" method="POST" id="logout">
+                            {% csrf_token %}
+                            <input type="hidden">
+                        </form>
+                    </li>
+				{% else %}
+					<li><a href="{% url 'register' %}">Register</a></li>
+					<li><a href="{% url 'login' %}">Login</a></li>
+				{% endif %}
+
+			</ul>
+			
+
+		</div>
+
+	</div>
+
+	<div class="col-lg-1">
+
+</nav></div><br><br><br><br>
