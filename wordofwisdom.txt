@@ -1,0 +1,20 @@
+daghan pa ka tun an.
+
+sunod naa nay encryption ang password
+jsonwebtoken para dili ma hack imong api kay ma open na cya permi kung makabalo cya sa imo 
+endpoint or url
+tapos environment variable para ma hide ang password sa imo database ug ang secret key sa
+imo endpoints
+
+
+tapos sequelize na dayon para orm sa imo database para bisag unsa imo database gamit
+isa ra ang code...kabalo naka gamay ani kay naka himo naka ani sa python
+
+nahimo ko na na tanan pangayo lang dayun if nasabtan na nmu..
+
+
+masabtan ra na nmu if magtuoon ka sa kay mosh
+
+ang sequelize mura ra ug moongose na orm or odm sa mongo
+
+entity framework sa c# or vb

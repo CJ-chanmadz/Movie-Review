@@ -1,0 +1,130 @@
+#Venv
+
+mkdir 
+cd .
+code .
+python -m venv ./venv
+./venv/scripts/activate
+(venv)
+
+#Installing Django
+
+pip install django
+
+#To check 
+python -m django --version
+
+#list of sub command
+django-admin
+
+#Start Project
+django-admin startproject (project name) .
+
+#Gitignore
+
+adto sa gitignore.io search django then c & v then include venv
+git add . && git commot -m 'Inital commit'
+
+#Creating app 
+
+python manage.py startapp pages
+
+if we create app go to the project/settings/ installed apps then put 'pages.apps.PagesConfig',
+then create urls.py inside your app then connect it to the views.py
+
+from django.urls import path
+from . import views
+urlpatterns = [
+   path('', views.index, name='index')
+]
+
+inside views - 
+
+from django.http import HttpResponse
+def index(request): 
+   return render (request, 'pages/index.html')
+
+then connect to the main url then add 
+
+path('', include('pages.urls')),
+
+#Templates
+
+settings.py - look for templates 'DIRS': [os.path.join(BASE_DIR, 'templates')]
+then create a folder to root folder name it templates then create two files about.html and index.html
+then register it to the pages.urls then put path('about', views.about, name='about')
+then go to views.py and define a function
+create base.html inside templates folder then put {% block content %}{% endblock %} 
+then go to index.html and add {% extends 'base.html' %} and insert the block content
+
+#STATIC
+
+go to your directory and go to project folder then create static folder and inside create img folder
+go to settings.py then add 
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'facebook/static')
+]
+
+then python manage.py collectstatic
+
+to apply in the base.html {% load static %} then put {% static 'img/logo.png' %}
+
+#Organize base.html
+
+create folder partials inside templates and add two files name _header and _footer
+then in base.html {% include 'partials/_header.html' %}
+to link use {% url 'index' %} //look for <a> tag
+
+#Active or inactive in links
+
+<li
+{% if '/' == request.path %}
+class="nav-item active mr-3"
+{% else %}
+class="nav-item mr-3"
+{% endif %}
+>
+
+#postgress set-up
+pip install psycopg2
+pip install psycopg2-binary
+go to settings.py and find database replace the default to postgresql and name replace it with your dbname
+then add('NAME': 'cjmoviesdb',) 'USER': 'postgres', 'PASSWORD': 'lagirdam98','HOST': 'localhost'
+then python manage.py migrate
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'cjmovies',
+        'USER': 'postgres',
+        'PASSWORD': 'lagirdam98',
+        'HOST': 'localhost'
+    }
+}
+
+
+//Migration is a file that tells a database what to do basically as far as setting up tables and data col data types
+
+#Create SuperUser
+
+python manage.py createsuperuser
+to see the class in the admin go to admin.py and place from .models import Listings 
+admin.site.register(Listings)
+
+#Pagination
+
+Go to views.py 
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+after listing.objects.all() put this:
+paginator = Paginator(listings, 3)
+page = request.GET.get('page')
+paged_listings = paginator.get_page(page)
+context = {
+'listings' : paged_listings
+}
+
+
+//python manage.py sqlsequencereset// reset the auto incre pk

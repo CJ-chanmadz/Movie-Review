@@ -1,0 +1,38 @@
+install git
+
+New Repository +
+
+#Configure git
+git config --global user.name "name"
+gir config --global user.email "email"
+
+#Create a new folder then paste the file
+
+#Go to your env
+cd venv/scripts/activate
+
+#go to your project
+
+#git init
+
+#see untrack files
+git status
+
+#git add .
+
+#git commit -m "string"
+
+#go to your repository and copy the SSH 
+git remote add origin https://
+
+#git push -u origin master
+
+#if we have changes then
+got to cmd > heroku login
+cd publish then cd activate
+cd publish>moviereviews
+
+git status
+git add --all
+git commit -m "string"
+git push heroku master

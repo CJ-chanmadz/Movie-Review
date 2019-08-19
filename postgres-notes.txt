@@ -1,0 +1,192 @@
+CREATE DATABASE database_name ;
+DROP DATABASE database_name ;
+\l - see the list of databases
+psql --help
+\c test -> to connect to the database
+CREATE TABLE person ( id INT, fname VARCHAR(50) );
+DROP TABLE person
+\d -> see all the tables
+\d person -> specific table
+\dt -> show just table
+
+#contstraints
+
+CREATE TABLE person (
+id BIGSERIAL NOT NULL PRIMARY KEY,
+first_name VARCHAR(50) NOT NULL,
+last_name VARCHAR(50) NOT NULL,
+gender VARCHAR(7) NOT NULL,
+date_of_birth DATE NOT NULL,
+email VARCHAR(150) );
+
+#Insert
+
+INSERT INTO person (first_name, last_name)
+VALUES ('christian', 'madrigal', date '1998-08-07');
+SELECT * FROM person;
+
+#generate 1k row
+
+use mockaroo.com
+\i location -> to include file
+
+#Select From
+
+SELECT * FROM person;
+SELECT email FROM person;
+
+#Order by
+
+SELECT * FROM person ORDER BY country_of_birth;
+SELECT * FROM person ORDER BY country_of_birth DESC;
+
+#Distinct
+
+SELECT country_of_birth FROM person ORDER BY country_of_birth;
+SELECT DISTINCT country_of_brith FROM person ORDER BY country_of_birth; remove duplicate
+
+#Where Clause and And
+
+SELECT * FROM person WHERE gender='Male';
+SELECT * FROM person WHERE gender='Male' AND country_of_birth= 'China';
+SELECT * FROM person WHERE gender='Male' AND (country_of_birth= 'China' OR country_of_birth= 'Poland';)
+
+#Comparison operators
+
+SELECT 1=1 //True
+SELECT 1 <> 1 //<> means not equal
+
+#Limit, Offset & Fetch
+
+SELECT * FROM person LIMIT 10;
+SELECT * FROM person OFFSET 5 LIMIT 5; //start counting @ 6
+
+#IN
+
+SELECT * FROM person WHERE country_of_birth IN ('China','Brazil','France');
+
+#Between
+
+SELECT * FROM person
+WHERE date_of_birth 
+BETWEEN DATE '2000-01-01' AND '2015-01-01';
+
+#Like and ilike
+
+SELECT * FROM person WHERE email LIKE '%.com';
+
+#Group By
+
+SELECT countr_of_birth, COUNT(*) FROM person GROUP BY country_of_birth ORDER BY countr_of_birth;
+
+#Group by Having
+
+SELECT countr_of_birth, COUNT(*) FROM person GROUP BY country_of_birth HAVING COUNT(*) >5 ORDER BY countr_of_birth;
+
+#Calculating Min Max Average
+
+SELECT MAX(price) FROM car;
+SELECT MIN(price) FROM car;
+SELECT AVG(price) FROM car;
+SELECT ROUND(AVG(price)) FROM car;
+SELECT make, model, MIN(price) FROM car GROUP BY make, model;
+
+#Sum
+
+SELECT SUM(price) FROM car;
+SELECT make, SUM(price) FROM car GROUP BY make;
+
+#calculation
+
+SELECT id, make, model, price * .10 FROM car;
+SELECT id, make, model, ROUND(price * .10, 2) FROM car;
+SELECT id, make, model, ROUND(price * .10, 2), ROUND(price - (price * .10) , 2) FROM car;
+
+#Alias
+
+SELECT id, make, model, price AS original_price, ROUND(price * .10, 2) AS ten_percent, ROUND(price - (price * .10) , 2) AS ten_percent_off FROM car;
+
+#Coalesce
+
+SELECT COALESCE(email, 'Email not provided') FROM person; //overide the default null
+
+#Null if
+
+SELECT COALESCE(10 / NULLIF(0, 0), 0)//handle division by zero
+
+#Timestamps and Dates
+
+SELECT NOW()::DATE;
+SELECT NOW()::TIME;
+
+#Adding and Subtructing With Dates
+
+SELECT NOW() - INTERVAL '1 YEAR'; 
+SELECT NOW() + INTERVAL '1 DAY'; 
+SELECT (NOW()+INTERVAL '10 MONTHS')::DATE;
+
+#Age Function
+
+SELECT first_name, last_name, gender, country_of_birth, date_of_birth, AGE(NOW(), date_of_birth) AS age FROM person;
+
+#Primary Keys
+
+ALTER TABLE person ADD PRIMARY KEY(id) //add primary key
+
+#Unique Constraints
+
+SELECT email, count(*) FROM person GROUP BY email HAVING COUNT(*) > 1; // Ihapon ang null nga email
+ALTER TABLE person ADD CONSTRAINT unique_email_address UNIQUE(email);
+ALTER TABLE person DROP CONSTRAINT unique_email_address; //drop contstraints
+ALTER TABLE person ADD UNIQUE (email);
+
+primary key - identify record in a table 
+
+#Check Constraints
+
+ALTER TABLE person ADD CONSTRAINT gender_constraint CHECK(gender = 'Male' OR gender = 'Female');
+
+#Delete Record
+
+DELETE * FROM person;
+
+#Update Record
+
+UPDATE person SET email ='cj@gmail.com' WHERE id = 10;
+
+#InsertINTO
+
+INSERT INTO person (first_name, last_name)
+VALUES ('christian', 'madrigal', date '1998-08-07') ON CONFLICT (id) DO NOTHING;
+
+#Upsert
+
+INSERT INTO person (id, first_name, email) VALUES (2017,Russ,email) ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email
+
+#Foreign keys, join, Relationship
+
+car_id BIGINT REFERENCES car(id) UNIQUE(car_id)//ROREIGN TO RELATE TO PK
+UNIQUE(car_id)
+
+#UPDATE
+
+UPDATE person SET car_id = 2 WHERE id = 1;
+
+#Inner Joins
+
+SELECT * FROM person JOIN car ON person.car_id = car.id;
+SELECT person.first_name, car.make, car.model FROM person JOIN car ON person.car_id = car.id;
+
+#Left Joins
+
+SELECT * FROM person LEFT JOIN car ON car.id = person.car_id;
+SELECT * FROM person WHERE car_id IS NULL;
+SELECT * FROM person LEFT JOIN car ON car.id=person.car_id WHERE car.* IS NULL;
+
+JOIN returns all records that has foreign key while LEFT JOIN returns all record even though it doesnt have a foreign key
+
+#Generate CSV 
+
+\copy (SELECT * FROM person LEFT JOIN car ON car.id = person.car_id) TO 'C:\Users\User\Desktop\results.csv' DELIMITER ',' CSV HEADER;
+
+LEARN UUID!
